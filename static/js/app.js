@@ -20,7 +20,10 @@ function populateTestSubjectIDs(data)
             return name;
         });
     
-    displayDemographicInfo(data, data.names[0]);
+    testSubjectID = data.names[0];
+    displayDemographicInfo(data, testSubjectID);
+    displayTopTenOTUs(data, testSubjectID);
+    displayBubbleChart(data, testSubjectID);
 }
 
 function refreshData(testSubjectID)
@@ -28,6 +31,8 @@ function refreshData(testSubjectID)
     d3.json(bellyButtonData).then(data => {
 
         displayDemographicInfo(data, testSubjectID);
+        displayTopTenOTUs(data, testSubjectID);
+        displayBubbleChart(data, testSubjectID);
     });
 }
 
@@ -48,4 +53,46 @@ function displayDemographicInfo(data, testSubjectID)
                 demographicInfo.append("p").text("WFreq: " + metaData.wfreq);
             }
     });
+}
+
+function displayTopTenOTUs(data, testSubjectID)
+{
+    data.samples.map(sample => {
+        if (sample.id == testSubjectID)
+            {
+                otuIDs = sample.otu_ids.map(otuID => {
+                    return otuID;
+                });
+                sampleValues = sample.sample_values.map(sampleValue => {
+                    return sampleValue;
+                });
+                otuLabels = sample.otu_labels.map(otuLabel => {
+                    return otuLabel;
+                });
+            }
+    });
+    console.log(otuIDs);
+    console.log(sampleValues);
+    console.log(otuLabels);
+
+    // sampleValues = sampleValues.sort(function sortFunction(a, b) {
+    //     return b - a;
+    //   });
+
+    // var sliced = sortedAscending.slice(0, 5);
+
+    var trace = [{
+        type: 'bar',
+        x: sampleValues,
+        y: otuIDs,
+        text: otuLabels,
+        orientation: 'h'
+      }];
+      
+      Plotly.newPlot('bar', trace);
+}
+
+function displayBubbleChart(data, testSubjectID)
+{
+    
 }
