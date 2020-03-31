@@ -24,6 +24,7 @@ function populateTestSubjectIDs(data)
     displayDemographicInfo(data, testSubjectID);
     displayTopTenOTUs(data, testSubjectID);
     displayBubbleChart(data, testSubjectID);
+    displayGaugeChart(data, testSubjectID);
 }
 
 function refreshData(testSubjectID)
@@ -33,6 +34,7 @@ function refreshData(testSubjectID)
         displayDemographicInfo(data, testSubjectID);
         displayTopTenOTUs(data, testSubjectID);
         displayBubbleChart(data, testSubjectID);
+        displayGaugeChart(data, testSubjectID);
     });
 }
 
@@ -123,4 +125,46 @@ function displayBubbleChart(data, testSubjectID)
     };
       
     Plotly.newPlot('bubble', trace, layout);
+}
+
+function displayGaugeChart(data, testSubjectID)
+{
+    data.metadata.map(metaData => {
+        if (metaData.id == testSubjectID) {
+            washingFrequency = metaData.wfreq;
+        }
+    });
+
+    var data = [{
+        type: "indicator",
+        mode: "gauge+number",
+        value: washingFrequency,
+        title: { text: "Belly Button Washing Frequency", font: { size: 18 } },
+        gauge: {
+            axis: { range: [null, 9]},
+            bar: { color: "orange" },
+            bgcolor: "white",
+            borderwidth: 2,
+            bordercolor: "white",
+            steps: [
+                { range: [0, 1], color: "#00ffff", text: "0-1" },
+                { range: [1, 2], color: "#00e7f2" },
+                { range: [2, 3], color: "#00cfe3" },
+                { range: [3, 4], color: "#00b8d3" },
+                { range: [4, 5], color: "#00a1c1" },
+                { range: [5, 6], color: "#008bad" },
+                { range: [6, 7], color: "#007599" },
+                { range: [7, 8], color: "#006083" },
+                { range: [8, 9], color: "#004c6d" }
+            ]
+        }
+    }];
+    
+    var layout = {
+        margin: { t: 25, r: 25, l: 25, b: 25 },
+        paper_bgcolor: "white",
+        // font: { color: "black", family: "Arial" }
+      };
+    
+    Plotly.newPlot('gauge', data, layout);    
 }
