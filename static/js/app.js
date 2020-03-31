@@ -85,12 +85,42 @@ function displayTopTenOTUs(data, testSubjectID)
       }];
     
     var layout = {
-        title: ('Top ' + sampleValues.length + ' OTUs Found for Subject ID: ' + testSubjectID)
+        title: ('Top ' + sampleValues.length + ' OTUs for Subject ID: ' + testSubjectID)
     }  
     Plotly.newPlot('bar', trace, layout);
 }
 
 function displayBubbleChart(data, testSubjectID)
 {
-    
+    data.samples.map(sample => {
+        if (sample.id == testSubjectID)
+            {
+                otuIDs = sample.otu_ids.map(otuID => {
+                    return otuID;
+                });
+                sampleValues = sample.sample_values.map(sampleValue => {
+                    return sampleValue;
+                });
+                otuLabels = sample.otu_labels.map(otuLabel => {
+                    return otuLabel;
+                });
+            }
+    });
+
+    var trace = [{
+        x: otuIDs,
+        y: sampleValues,
+        mode: 'markers',
+        marker: {
+            color: otuIDs,
+            size: sampleValues,
+        },
+        text: otuLabels
+    }];
+            
+      var layout = {
+        title: 'Sample Size',
+    };
+      
+    Plotly.newPlot('bubble', trace, layout);
 }
