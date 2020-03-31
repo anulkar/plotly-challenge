@@ -61,7 +61,7 @@ function displayTopTenOTUs(data, testSubjectID)
         if (sample.id == testSubjectID)
             {
                 otuIDs = sample.otu_ids.map(otuID => {
-                    return otuID;
+                    return ("OTU " + otuID);
                 });
                 sampleValues = sample.sample_values.map(sampleValue => {
                     return sampleValue;
@@ -71,15 +71,10 @@ function displayTopTenOTUs(data, testSubjectID)
                 });
             }
     });
-    console.log(otuIDs);
-    console.log(sampleValues);
-    console.log(otuLabels);
 
-    // sampleValues = sampleValues.sort(function sortFunction(a, b) {
-    //     return b - a;
-    //   });
-
-    // var sliced = sortedAscending.slice(0, 5);
+    otuIDs = otuIDs.slice(0, 10).reverse();
+    sampleValues = sampleValues.slice(0, 10).reverse();
+    otuLabels = otuLabels.slice(0, 10).reverse();
 
     var trace = [{
         type: 'bar',
@@ -88,8 +83,11 @@ function displayTopTenOTUs(data, testSubjectID)
         text: otuLabels,
         orientation: 'h'
       }];
-      
-      Plotly.newPlot('bar', trace);
+    
+    var layout = {
+        title: ('Top ' + sampleValues.length + ' OTUs Found for Subject ID: ' + testSubjectID)
+    }  
+    Plotly.newPlot('bar', trace, layout);
 }
 
 function displayBubbleChart(data, testSubjectID)
