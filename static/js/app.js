@@ -139,7 +139,7 @@ function displayGaugeChart(data, testSubjectID)
         type: "indicator",
         mode: "gauge+number",
         value: washingFrequency,
-        title: { text: "Belly Button Washing Frequency", font: { size: 18 } },
+        title: { text: "Belly Button Washing Frequency" + "<br>" + "Scrubs per Week", font: { size: 22 } },
         gauge: {
             axis: { range: [null, 9]},
             bar: { color: "orange" },
@@ -163,7 +163,6 @@ function displayGaugeChart(data, testSubjectID)
     var layout = {
         margin: { t: 25, r: 25, l: 25, b: 25 },
         paper_bgcolor: "white",
-        // font: { color: "black", family: "Arial" }
       };
     
     Plotly.newPlot('gauge', data, layout);    
